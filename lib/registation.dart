@@ -6,6 +6,7 @@ import 'package:lockery/components/RoundedPasswordField.dart';
 import 'package:lockery/components/RoundedTextInputField.dart';
 import 'package:lockery/components/TextFieldContainer.dart';
 import 'package:lockery/services/db.dart';
+import 'package:lockery/userPage.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:lottie/lottie.dart';
 
@@ -118,7 +119,7 @@ class _RegistationPageState extends State<RegistationPage> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(50),
                     child: Container(
-                      height: height * 0.65,
+                      height: height * 0.9,
                       width: width * 0.95,
                       color: Colors.grey.withOpacity(0.8),
                       child: ClipRect(
@@ -142,7 +143,7 @@ class _RegistationPageState extends State<RegistationPage> {
                                 // onChanged: (e) {print(e)}
                               ),
                               RoundedTextInputField(
-                                hitText: "Registation No:",
+                                hitText: "NIC No:",
                                 textIcon:
                                     Icon(Icons.numbers, color: Colors.amber),
                                 onChanged: (e) {
@@ -202,7 +203,11 @@ class _RegistationPageState extends State<RegistationPage> {
                                 press: () async {
                                   print("password........... :" + password);
                                   print("Register button pressed");
-
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => userPage()),
+                                  );
                                   // register(
                                   //   name,
                                   //   registationNo,
