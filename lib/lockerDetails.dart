@@ -1,19 +1,17 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:lockery/lockerDetails.dart';
-import 'package:lockery/receiveDetails.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:lottie/lottie.dart';
 
-class userPage extends StatefulWidget {
-  userPage({Key? key}) : super(key: key);
+class LockerDetails extends StatefulWidget {
+  LockerDetails({Key? key}) : super(key: key);
 
   @override
-  State<userPage> createState() => _userPageState();
+  State<LockerDetails> createState() => _LockerDetailsState();
 }
 
-class _userPageState extends State<userPage> {
+class _LockerDetailsState extends State<LockerDetails> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -39,7 +37,7 @@ class _userPageState extends State<userPage> {
                 baseColor: Colors.black,
                 highlightColor: Colors.yellow,
                 child: Text(
-                  "User",
+                  "Locker Details",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 40.0,
@@ -63,47 +61,12 @@ class _userPageState extends State<userPage> {
                       filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
                       child: Column(
                         children: [
-                          Text("Menu", //South Eastern University of Sri Lanka
+                          Text(
+                              "Details", //South Eastern University of Sri Lanka
                               style: TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.bold)),
                           SizedBox(
                             height: width * 0.05,
-                          ),
-                          Card(
-                            child: ListTile(
-                              leading: FlutterLogo(size: 72.0),
-                              title: Text('Your Locker Details'),
-                              subtitle: Text(
-                                  'A sufficiently long subtitle warrants three lines.'),
-                              trailing: Icon(Icons.open_in_full),
-                              isThreeLine: true,
-                              onTap: () {
-                                print("Recive a Locker");
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LockerDetails()),
-                                );
-                              },
-                            ),
-                          ),
-                          Card(
-                            child: ListTile(
-                              leading: FlutterLogo(size: 72.0),
-                              title: Text('Recive a Locker'),
-                              subtitle: Text(
-                                  'A sufficiently long subtitle warrants three lines.'),
-                              trailing: Icon(Icons.open_in_full),
-                              isThreeLine: true,
-                              onTap: () {
-                                print("Recive a Locker");
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => receiveDetails()),
-                                );
-                              },
-                            ),
                           ),
                           SizedBox(
                             height: height * 0.05,
@@ -123,5 +86,6 @@ class _userPageState extends State<userPage> {
         )
       ],
     ));
+    ;
   }
 }

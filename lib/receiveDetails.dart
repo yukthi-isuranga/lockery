@@ -33,6 +33,9 @@ class _receiveDetailsState extends State<receiveDetails> {
               child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(
+                height: width * 0.05,
+              ),
               Shimmer.fromColors(
                 baseColor: Colors.black,
                 highlightColor: Colors.yellow,
@@ -68,6 +71,46 @@ class _receiveDetailsState extends State<receiveDetails> {
                           SizedBox(
                             height: width * 0.05,
                           ),
+                          Card(
+                            child: ListTile(
+                              leading: FlutterLogo(size: 72.0),
+                              title: Text('Your Locker Details'),
+                              subtitle: Text(
+                                  'A sufficiently long subtitle warrants three lines.'),
+                              trailing: Icon(Icons.open_in_full),
+                              isThreeLine: true,
+                            ),
+                          ),
+                          Card(
+                            child: ListTile(
+                              leading: FlutterLogo(size: 72.0),
+                              title: Text('Your Locker Details'),
+                              subtitle: Text(
+                                  'A sufficiently long subtitle warrants three lines.'),
+                              trailing: Icon(Icons.open_in_full),
+                              isThreeLine: true,
+                            ),
+                          ),
+                          Card(
+                            child: ListTile(
+                              leading: FlutterLogo(size: 72.0),
+                              title: Text('Your Locker Details'),
+                              subtitle: Text(
+                                  'A sufficiently long subtitle warrants three lines.'),
+                              trailing: Icon(Icons.open_in_full),
+                              isThreeLine: true,
+                            ),
+                          ),
+                          Card(
+                            child: ListTile(
+                              leading: FlutterLogo(size: 72.0),
+                              title: Text('Your Locker Details'),
+                              subtitle: Text(
+                                  'A sufficiently long subtitle warrants three lines.'),
+                              trailing: Icon(Icons.open_in_full),
+                              isThreeLine: true,
+                            ),
+                          ),
                           SizedBox(
                             height: height * 0.05,
                           )
@@ -77,10 +120,6 @@ class _receiveDetailsState extends State<receiveDetails> {
                   ),
                 ),
               ),
-              InkWell(
-                child: const Text("Developed By"),
-                onTap: () {},
-              )
             ],
           )),
         )
