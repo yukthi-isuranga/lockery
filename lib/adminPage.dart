@@ -7,14 +7,14 @@ import 'package:shimmer/shimmer.dart';
 import 'package:lottie/lottie.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class userPage extends StatefulWidget {
-  userPage({Key? key}) : super(key: key);
+class AdminPage extends StatefulWidget {
+  AdminPage({Key? key}) : super(key: key);
 
   @override
-  State<userPage> createState() => _userPageState();
+  State<AdminPage> createState() => _AdminPageState();
 }
 
-class _userPageState extends State<userPage> {
+class _AdminPageState extends State<AdminPage> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -42,7 +42,7 @@ class _userPageState extends State<userPage> {
                     baseColor: Colors.black,
                     highlightColor: Colors.yellow,
                     child: Text(
-                      "User",
+                      "Admin",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 40.0,

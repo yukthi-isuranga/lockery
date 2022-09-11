@@ -2,52 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future register(String name, String registationNo, email, password,
-    String userRoll, String userDeviceToken) async {
-  print("password :" + password);
-  // showDialog(
-  //     context: context,
-  //     builder: (context) => Center(
-  //             child: SpinKitFadingCircle(
-  //           controller: AnimationController(
-  //               vsync: this, duration: const Duration(milliseconds: 1200)),
-  //           itemBuilder: (BuildContext context, int index) {
-  //             return DecoratedBox(
-  //               decoration: BoxDecoration(
-  //                 color: index.isEven ? Colors.red : Colors.green,
-  //               ),
-  //             );
-  //           },
-  //         )));
-
-  try {
-    // FirebaseMessaging messaging = FirebaseMessaging.instance;
-    // String? userDeviceToken = await messaging.getToken().toString();
-    // String? userDeviceToken = await FirebaseMessaging.instance.getToken();
-    await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final User? user = auth.currentUser;
-    final uid = user?.uid;
-    print("uuuuussssseeeeerrrrr userDeviceToken......" + userDeviceToken);
-    String? accYear;
-    await DatabaseService(uid: uid.toString()).updateUser(
-        name, registationNo, email, userRoll, userDeviceToken, accYear);
-  } on FirebaseAuthException catch (e) {
-    print(e);
-
-    final snackBar = SnackBar(
-      // backgroundColor: Colors.red,
-      content: Text(e.message.toString()),
-      action: SnackBarAction(
-        label: 'ok',
-        onPressed: () {},
-      ),
-    );
-    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-}
-
 class DatabaseService {
   final String? uid;
   // final String collectionName;
@@ -69,16 +23,18 @@ class DatabaseService {
       .doc()
       .id;
 
-  Future<void> updateUser(String name, String regNo, String email,
-      String userRoll, String userDeviceToken, String? academicYear) async {
+  Future<void> updateUser(
+    String name,
+    String regNo,
+    String email,
+    String userRoll,
+  ) async {
     return await notificationAppCollection.doc(uid).set({
       'name': name,
       'registationNo': regNo,
       'email': email,
       "userRoll": userRoll,
       "uid": uid,
-      "userDeviceToken": userDeviceToken,
-      "academicYear": academicYear
     });
   }
 
