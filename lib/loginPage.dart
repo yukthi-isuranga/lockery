@@ -4,9 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:lockery/components/RoundedButton.dart';
 import 'package:lockery/components/RoundedPasswordField.dart';
 import 'package:lockery/components/RoundedTextInputField.dart';
+import 'package:lockery/loading.dart';
 import 'package:lockery/registation.dart';
+import 'package:lockery/services/userMng.dart';
+import 'package:lockery/userPage.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:lottie/lottie.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key, required this.title}) : super(key: key);
@@ -39,117 +44,149 @@ class _LoginPageState extends State<LoginPage> {
     height = size.height;
     width = size.width;
     return Scaffold(
-      body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          // width: 100,
-          // height: 100,
-          // color: Colors.amber,
-          child: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              Positioned(
-                  top: 0,
-                  left: 0,
-                  child: Image.asset("assets/images/Rectangle top.png")),
-              Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Image.asset("assets/images/Rectangle bottom.png")),
-              SingleChildScrollView(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Shimmer.fromColors(
-                    baseColor: Colors.black,
-                    highlightColor: Colors.yellow,
-                    child: Text(
-                      "LOCKERY App",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 40.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  // Image(
-                  //   width: width * 0.35,
-                  //   height: width * 0.4,
-                  //   image: AssetImage('assets/images/logo.png'),
-                  //   fit: BoxFit.fill,
-                  // ),
-                  Container(
-                    width: width * 0.35,
-                    height: width * 0.4,
-                    child: Lottie.asset('assets/images/74938-lock-blue.json'),
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Container(
-                      height: height * 0.5,
-                      width: width * 0.95,
-                      color: Colors.grey.withOpacity(0.8),
-                      child: ClipRect(
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+      body: StreamBuilder<User?>(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(snapshot.data?.uid)
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    if (snapshot.hasData) {
+                      final userRoll = snapshot.data?["userRoll"];
+
+                      return UserManagement().routing(userRoll);
+                    }
+                    return Loading();
+                  });
+            } else {
+              return Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  // width: 100,
+                  // height: 100,
+                  // color: Colors.amber,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      Positioned(
+                          top: 0,
+                          left: 0,
+                          child:
+                              Image.asset("assets/images/Rectangle top.png")),
+                      Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Image.asset(
+                              "assets/images/Rectangle bottom.png")),
+                      SingleChildScrollView(
                           child: Column(
-                            children: [
-                              Text(
-                                  "Sign In", //South Eastern University of Sri Lanka
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold)),
-                              RoundedTextInputField(
-                                hitText: "Email",
-                                textIcon:
-                                    Icon(Icons.person, color: Colors.amber),
-                                onChanged: (e) {
-                                  print(e);
-                                  emailSetter(e);
-                                  // email = e;
-                                },
-                                // onChanged: (e) {print(e)}
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Shimmer.fromColors(
+                            baseColor: Colors.black,
+                            highlightColor: Colors.yellow,
+                            child: Text(
+                              "LOCKERY App",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 40.0,
+                                fontWeight: FontWeight.bold,
                               ),
-                              RoundedPasswordField(
-                                onChanged: (value) {
-                                  print(value);
-                                  passwordSetter(value);
-                                },
-                              ),
-                              RoundedButton(
-                                color: Colors.amber,
-                                press: () {},
-                                text: "Login",
-                                textColor: Colors.white,
-                              ),
-                              RoundedButton(
-                                color: Colors.amber,
-                                press: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const RegistationPage(
-                                                title: "Registation")),
-                                  );
-                                },
-                                text: "Register",
-                                textColor: Colors.white,
-                              )
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    child: const Text("Developed By"),
-                    onTap: () {},
-                  )
-                ],
-              ))
-            ],
-          )),
+                          // Image(
+                          //   width: width * 0.35,
+                          //   height: width * 0.4,
+                          //   image: AssetImage('assets/images/logo.png'),
+                          //   fit: BoxFit.fill,
+                          // ),
+                          Container(
+                            width: width * 0.35,
+                            height: width * 0.4,
+                            child: Lottie.asset(
+                                'assets/images/74938-lock-blue.json'),
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Container(
+                              height: height * 0.5,
+                              width: width * 0.95,
+                              color: Colors.grey.withOpacity(0.8),
+                              child: ClipRect(
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(
+                                      sigmaX: 2.0, sigmaY: 2.0),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                          "Sign In", //South Eastern University of Sri Lanka
+                                          style: TextStyle(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold)),
+                                      RoundedTextInputField(
+                                        hitText: "Email",
+                                        textIcon: Icon(Icons.person,
+                                            color: Colors.amber),
+                                        onChanged: (e) {
+                                          print(e);
+                                          emailSetter(e);
+                                          // email = e;
+                                        },
+                                        // onChanged: (e) {print(e)}
+                                      ),
+                                      RoundedPasswordField(
+                                        onChanged: (value) {
+                                          print(value);
+                                          passwordSetter(value);
+                                        },
+                                      ),
+                                      RoundedButton(
+                                        color: Colors.amber,
+                                        press: () {
+                                          login(email, password);
+                                        },
+                                        text: "Login",
+                                        textColor: Colors.white,
+                                      ),
+                                      RoundedButton(
+                                        color: Colors.amber,
+                                        press: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const RegistationPage(
+                                                        title: "Registation")),
+                                          );
+                                        },
+                                        text: "Register",
+                                        textColor: Colors.white,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            child: const Text("Developed By"),
+                            onTap: () {},
+                          )
+                        ],
+                      ))
+                    ],
+                  ));
+            }
+          }),
     );
   }
+}
+
+Future<void> login(email, password) async {
+  await FirebaseAuth.instance
+      .signInWithEmailAndPassword(email: email, password: password);
 }
